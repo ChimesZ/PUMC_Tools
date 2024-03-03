@@ -15,24 +15,24 @@ def df_clean(path,name):
 def get_name_list(path):
     namelist = []
     for dir in os.listdir(path):
-        if os.path.isfile(path + dir):
+        if os.path.isfile(os.path.join(path, dir)):
             namelist.append(dir.split('.')[0])
-    namelist.remove('')
+    # namelist.remove('')
     return namelist
 
 def main():
-    path = '/Users/apple/Desktop/PUMC/课程进度/'
+    path = '/Users/apple/Desktop/PUMC/课表/选修课表'
     namelist = get_name_list(path)
     dfs = []
     for name in namelist:
-        name_path = os.join(path, name+'.xls')
+        name_path = os.path.join(path, name+'.xls')
         print(name_path)
         df = df_clean(name_path, name)
         dfs.append(df)
     all_df = pd.concat(dfs)
     all_df['周次'] = all_df['周次'].astype(int)
     all_df.sort_values(by=['周次','月份','日期','节次'],inplace=True)
-    all_df.to_excel(path + '总日程.xlsx', index=False)
+    all_df.to_excel(os.path.join(path, '选修课总日程.xlsx'), index=False)
 
 if __name__ == '__main__':
     main()
